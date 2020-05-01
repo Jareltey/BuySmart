@@ -1,0 +1,12 @@
+{% extends 'basic_app/base.html' %}
+
+{% block body_block %}
+
+<h1>Login Page (only for admins)</h1>
+<br>
+<form method="post">
+  {{form.as_p}}
+  {% csrf_token %}
+  <input type="submit" name="" value="Login">
+</form>
+{% endblock %}

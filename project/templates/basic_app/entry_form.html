@@ -1,0 +1,28 @@
+{% extends 'basic_app/base.html' %}
+{% load static %}
+{% block css_block %}
+<link rel="stylesheet" href="{% static 'css/zoom.css' %}">
+{% endblock %}
+
+{% block body_block %}
+
+<div class="jumbotron">
+  {% if form.instance.pk %}
+    <h1 class="display-4">Update entry</h1>
+  {% else %}
+    <h1 class="display-4">Create new entry</h1>
+  {% endif %}
+  <p class="lead">*Shop address is optional</p>
+</div>
+
+<form method="post">
+  {{form.as_p}}
+  {% csrf_token %}
+  {% if form.instance.pk %}
+    <input type="submit" class='btn btn-primary' name="" value="Update">
+  {% else %}
+    <input type="submit" class='btn btn-primary' name="" value="Create">
+  {% endif %}
+</form>
+
+{% endblock %}

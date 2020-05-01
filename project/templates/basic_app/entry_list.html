@@ -1,0 +1,36 @@
+{% extends 'basic_app/base.html' %}
+{% load static %}
+
+{% block css_block %}
+<link rel="stylesheet" href="{% static 'css/entries_list.css' %}">
+{% endblock %}
+
+
+{% block body_block %}
+
+<table class='table table-bordered table-sm'>
+  <thead class='thead-light'>
+    <th>Mall</th>
+    <th>Product Category</th>
+    <th>Product</th>
+    <th>Shop Name</th>
+    <th>Shop Address</th>
+    <th>Price</th>
+    <th>Update?</th>
+    <th>Delete?</th>
+  </thead>
+  {% for entry in entry_list %}
+  <tr>
+    <td>{{entry.mall}}</td>
+    <td>{{entry.product_category}}</td>
+    <td>{{entry.product}}</td>
+    <td>{{entry.shop_name}}</td>
+    <td>{{entry.shop_address}}</td>
+    <td>{{entry.price}}</td>
+    <td><a href="{% url 'update' pk=entry.id %}">Update</a></td>
+    <td><a href="{% url 'delete' pk=entry.id %}">Delete</a></td>
+  </tr>
+  {% endfor %}
+</table>
+
+{% endblock %}

@@ -1,0 +1,17 @@
+#red{
+  color:red;
+}
+
+#bold{
+  color:red;
+  font-weight:bold;
+}
+
+.dropdown-menu>a{
+  padding: 15px 25px
+}
+
+#dropdownMenuButton{
+  height: 50px;
+  width: 200px
+}

@@ -1,0 +1,52 @@
+{% extends 'basic_app/base.html' %}
+{% load static %}
+{% load my_filters %}
+
+{% block css_block %}
+<link rel="stylesheet" href="{% static 'css/pro_cate_list.css' %}">
+{% endblock %}
+
+{% block body_block %}
+
+<p>Choose from the following product categories in {{mall}}:</p>
+
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Product Categories
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    {% for entry in unique %}
+      <a class="dropdown-item" href="#">{{entry.product_category}}</a>
+    {% endfor %}
+  </div>
+</div>
+
+<br>
+
+{% for num in num_list %}
+<table class='table table-bordered'>
+  <caption>Cheapest price for a product across stores in <span id='red'>red</span></caption>
+  <!-- <caption>Cheapest price across all products in all stores in <span id='bold'>bold</span></caption> -->
+    <thead class='thead-light'>
+      <th>{{used|get_index:num}}</th>
+      {% for row in pivot_tables|get_index:num %}
+        <th data-toggle="tooltip" data-placement="top" title="{{shop_address_dict|get_key:row.shop_name}}">{{row.shop_name}}</th>
+      {% endfor %}
+    </thead>
+    {% for product in unique_list|get_index:num %}
+      <tr>
+        <td>{{product}}</td>
+        {% for row in pivot_tables|get_index:num %}
+        {% with price=row|get_key:product %}
+          <td class='values'>{{price|default_if_none:'-'}}</td>
+        {% endwith %}
+        {% endfor %}
+      </tr>
+      {% endfor %}
+</table>
+{% endfor %}
+
+<br>
+<a class="btn btn-secondary" href="{% url 'mall_list' %}" role="button">Back</a>
+<script src="{% static 'js/pro_cat_list.js' %}"></script>
+{% endblock %}

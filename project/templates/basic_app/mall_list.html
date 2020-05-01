@@ -1,0 +1,45 @@
+{% extends 'basic_app/base.html' %}
+{% load static %}
+{% block css_block %}
+<link rel="stylesheet" href="{% static 'css/mall_list.css' %}">
+{% endblock %}
+
+{% block body_block %}
+
+{% if user.is_authenticated %}
+<p>Welcome, {{user.username|upper}}!</p>
+{% endif %}
+
+<div class="jumbotron">
+  <h1 class="display-4">BuySmart</h1>
+  <p class="lead">A site that compares prices of popular daily-use items sold at stores within the same mall</p>
+</div>
+
+<p>Choose which mall to check out:<p>
+
+{% for mall in used %}
+<a class="btn btn-outline-primary" href="{% url 'pro_cat_list' mall=mall %}" role="button">{{mall}}</a>
+{% endfor %}
+
+<!-- Showing product categories for each mall -->
+<!-- <table class='table table-bordered'>
+  <thead>
+    <th scope='col'></th>
+    {% for mall in used %}
+    <th scope='col'><a class="btn btn-outline-primary" href="{% url 'pro_cat_list' mall=mall %}" role="button">{{mall}}</a></th>
+    {% endfor %}
+  </thead>
+  <tr>
+    <th scope='row'>Product Categories</th>
+    {% for mall in all_malls_pro_cats %}
+    <td>
+      {% for pro_cat in mall %}
+        {{pro_cat}}<br>
+      {% endfor %}
+    </td>
+    {% endfor %}
+  </tr>
+</table> -->
+
+
+{% endblock %}
