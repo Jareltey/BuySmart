@@ -6,8 +6,6 @@
 
 {% block body_block %}
 
-<p>hello</p>
-
 {% if user.is_authenticated %}
 <p>Welcome, {{user.username|upper}}!</p>
 {% endif %}
