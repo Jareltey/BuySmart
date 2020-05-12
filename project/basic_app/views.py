@@ -7,33 +7,57 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext, Template
 from django.contrib.auth.decorators import login_required
+from funky_sheets.formsets import HotView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
 def Index(request):
     return render(request,'basic_app/base.html')
 
-class EntryList(ListView):
-
+class EntryList(LoginRequiredMixin,ListView):
+    login_url = '/login/'
     model = models.Entry
     ordering = ['mall','product_category','product','shop_name','shop_address','price']
 
-class CreateEntry(CreateView):
-
+class CreateEntryView(LoginRequiredMixin,HotView):
+    login_url = '/login/'
     model = models.Entry
-    fields = ('mall','product','product_category','shop_name','shop_address','price')
+    template_name = 'basic_app/create_form.html'
+    prefix = 'table'
+    success_url = reverse_lazy('update')
+    fields = ('mall','product_category','product','shop_name','shop_address','price')
+    hot_settings = {
+    'contextMenu':'true',
+    'autoWrapRow':'true',
+    'rowHeaders':'true',
+    'contextMenu':'true',
+    'search':'true',
+    'licenseKey':'non-commercial-and-evaluation',
+    }
 
-class UpdateEntry(UpdateView):
+class UpdateEntryView(CreateEntryView):
+    template_name = 'basic_app/update_form.html'
+    action = 'update'
+    button_text = 'Update'
 
-    model = models.Entry
-    fields = ('mall','product','product_category','shop_name','shop_address','price')
+# class CreateEntry(CreateView):
+#
+#     model = models.Entry
+#     fields = ('mall','product','product_category','shop_name','shop_address','price')
+#
+# class UpdateEntry(UpdateView):
+#
+#     model = models.Entry
+#     fields = ('mall','product','product_category','shop_name','shop_address','price')
+#
 
-class DeleteEntry(DeleteView):
+class DeleteEntry(LoginRequiredMixin,DeleteView):
 
+    login_url = '/login/'
     model = models.Entry
     success_url = reverse_lazy('entry_list')
 
-# @login_required(redirect_field_name='mall_list')
 def MallList(request):
     entries = models.Entry.objects.all()
 
@@ -104,7 +128,17 @@ def Login(request):
         if user:
             if user.is_active:
                 login(request,user)
-                return HttpResponseRedirect(reverse('mall_list'))
+                try:
+                    if request.GET['next'] == '/create/':
+                        return HttpResponseRedirect(reverse('create'))
+                    elif request.GET['next'] == '/update/':
+                        return HttpResponseRedirect(reverse('update'))
+                    elif request.GET['next'] == '/entry_list/':
+                        return HttpResponseRedirect(reverse('entry_list'))
+                    elif request.GET['next'].split('/')[1] == 'delete':
+                        return HttpResponseRedirect(reverse('delete',kwargs={'pk':request.GET['next'].split('/')[2]}))
+                except:
+                    return HttpResponseRedirect(reverse('mall_list'))
             else:
                 return HttpResponse('User not active')
 

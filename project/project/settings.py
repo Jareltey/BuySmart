@@ -24,9 +24,9 @@ TEMPLATE_DIR = os.path.join(BASE_DIR,'templates')
 SECRET_KEY = 'r7i75jq=o(vb*h9d7ys0d&e=n5q@lohugh*&79(!2a$(bj-70d'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['buysmart8.pythonanywhere.com']
 
 
 # Application definition
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'basic_app',
     'django_pivot',
+    'funky_sheets',
 ]
 
 MIDDLEWARE = [

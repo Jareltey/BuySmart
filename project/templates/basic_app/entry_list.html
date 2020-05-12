@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block css_block %}
-<link rel="stylesheet" href="{% static 'css/entries_list.css' %}">
+<link rel="stylesheet" href="{% static 'css/entry_list.css' %}">
 {% endblock %}
 
 
@@ -16,7 +16,6 @@
     <th>Shop Name</th>
     <th>Shop Address</th>
     <th>Price</th>
-    <th>Update?</th>
     <th>Delete?</th>
   </thead>
   {% for entry in entry_list %}
@@ -27,8 +26,8 @@
     <td>{{entry.shop_name}}</td>
     <td>{{entry.shop_address}}</td>
     <td>{{entry.price}}</td>
-    <td><a href="{% url 'update' pk=entry.id %}">Update</a></td>
     <td><a href="{% url 'delete' pk=entry.id %}">Delete</a></td>
+
   </tr>
   {% endfor %}
 </table>
