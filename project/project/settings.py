@@ -24,9 +24,9 @@ TEMPLATE_DIR = os.path.join(BASE_DIR,'templates')
 SECRET_KEY = 'r7i75jq=o(vb*h9d7ys0d&e=n5q@lohugh*&79(!2a$(bj-70d'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['buysmart8.pythonanywhere.com']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'basic_app',
     'django_pivot',
     'funky_sheets',
+    'analytical',
 ]
 
 MIDDLEWARE = [
@@ -126,3 +127,5 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR,'static'),
 ]
+
+GOOGLE_ANALYTICS_JS_PROPERTY_ID = 'UA-168000462-1'

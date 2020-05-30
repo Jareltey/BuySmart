@@ -11,6 +11,8 @@ class Entry(models.Model):
     shop_name = models.CharField(max_length=256,default='')
     shop_address = models.CharField(max_length=256,default='',blank=True,null=True)
     price = models.FloatField(default='')
+    created_at = models.DateField(auto_now_add=True)
+    updated_at = models.DateField(auto_now=True)
 
     def get_absolute_url(self):
         return reverse('entry_list')

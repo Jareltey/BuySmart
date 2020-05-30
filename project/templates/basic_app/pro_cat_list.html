@@ -8,7 +8,10 @@
 
 {% block body_block %}
 
-<p>Choose from the following product categories in {{mall}}:</p>
+<div class="helptext">
+  <p>Last updated: {{latest_update}}</p>
+  <p>Choose from the following product categories in <span><em>{{mall}}</em></span>:</p>
+</div>
 
 <div class="dropdown">
   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -26,6 +29,7 @@
 {% for num in num_list %}
 <table class='table table-bordered'>
   <caption>Cheapest price for a product across stores in <span id='red'>red</span></caption>
+  <caption>In case of bundled promotions, prices indicated are for each unit of product</caption>
   <!-- <caption>Cheapest price across all products in all stores in <span id='bold'>bold</span></caption> -->
     <thead class='thead-light'>
       <th>{{used|get_index:num}}</th>
@@ -37,16 +41,49 @@
       <tr>
         <td>{{product}}</td>
         {% for row in pivot_tables|get_index:num %}
-        {% with price=row|get_key:product %}
-          <td class='values'>{{price|default_if_none:'-'}}</td>
+        {% with price=row|get_key:product shop_name=row.shop_name shop_address=shop_address_dict|get_key:row.shop_name %}
+          <!-- <td class='values' id='{{shop_name}} {{product}}'>{{shop_name}}</td> -->
+          <td class='values' id='{{shop_name}}%{{shop_address}}%{{product}}'>{{price|default_if_none:'-'}}
+            <br>
+          <button type="button" class='btn btn-success  btn-sm' onclick='Disable()' name="button">Add To Cart</button></td>
         {% endwith %}
         {% endfor %}
       </tr>
-      {% endfor %}
+    {% endfor %}
 </table>
 {% endfor %}
 
+<section class='container content-section'>
+  <h2 class='section-header'>CART</h2>
+  <div class="cart-row">
+    <span class="cart-mall cart-header cart-column">MALL</span>
+    <span class="cart-shopname cart-header cart-column">SHOP NAME</span>
+    <span class="cart-shopaddress cart-header cart-column">SHOP ADDRESS</span>
+    <span class="cart-product cart-header cart-column">PRODUCT</span>
+    <span class="cart-price cart-header cart-column">PRICE</span>
+    <span class="cart-quantity cart-header cart-column">QUANTITY</span>
+  </div>
+  <div class="cart-items">
+
+  </div>
+  <div class="cart-total">
+      <strong class="cart-total-title">Total</strong>
+      <span class="cart-total-price">$0</span>
+  </div>
+
+<br>
+<button id='backtoproductlisting' class="btn btn-secondary" type="button" name="button">Back to product listing</button>
+</section>
+
 <br>
 <a class="btn btn-secondary" href="{% url 'mall_list' %}" role="button">Back</a>
+<button class="btn btn-info" type="button" name="button">View Cart</button>
+
+<br>
+<br>
+<div class="helptext">
+  <p><span id='red'>Warning</span>: Clicking back or refreshing the page will cause items in the cart to be removed! Changing between product categories on this page is fine.</p>
+</div>
+
 <script src="{% static 'js/pro_cat_list.js' %}"></script>
 {% endblock %}

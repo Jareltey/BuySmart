@@ -35,6 +35,7 @@ class CreateEntryView(LoginRequiredMixin,HotView):
     'search':'true',
     'licenseKey':'non-commercial-and-evaluation',
     }
+    ordering = ['mall','product_category','product','shop_name','shop_address','price']
 
 class UpdateEntryView(CreateEntryView):
     template_name = 'basic_app/update_form.html'
@@ -83,6 +84,14 @@ def MallList(request):
 def ProcatList(request,mall):
     entries = models.Entry.objects.filter(mall=mall)
 
+    entry_dates = []
+    for entry in entries:
+        entry_dates.append(entry.created_at)
+        entry_dates.append(entry.updated_at)
+
+    latest_update = max(entry_dates)
+    print(latest_update)
+
     used = []
     unique = []
     for entry in entries:
@@ -105,6 +114,7 @@ def ProcatList(request,mall):
         for entry in entries:
             if entry.product not in unique_entries:
                 unique_entries.append(entry.product)
+                unique_entries.sort()
 
         for entry in entries:
             if entry.shop_name not in shop_address_dict and entry.shop_address != None:
@@ -116,7 +126,7 @@ def ProcatList(request,mall):
         num_list.append(i)
         i = i+1
 
-    return render(request,'basic_app/pro_cat_list.html',{'used':used,'unique':unique,'pivot_tables':pivot_tables,'unique_list':unique_list,'num_list':num_list,'mall':mall,'shop_address_dict':shop_address_dict})
+    return render(request,'basic_app/pro_cat_list.html',{'used':used,'unique':unique,'pivot_tables':pivot_tables,'unique_list':unique_list,'num_list':num_list,'mall':mall,'shop_address_dict':shop_address_dict,'latest_update':latest_update})
 
 def Login(request):
 
